@@ -1,0 +1,10 @@
+days,cagr,sharpe,max_drawdown,total_return,long_threshold,short_threshold,cost_bps,execution_price,label,long_only,accuracy,strategy
+242,0.0,0.0,0.0,0.0,0.55,0.45,5.0,next_open_to_close,model_long_short,False,,model_long_short
+242,0.0,0.0,0.0,0.0,0.55,0.45,5.0,next_open_to_close,model_long_only,True,,model_long_only
+242,-0.013940865923353196,-0.49673096546081,-0.04040679698707317,-0.013391378063271953,,,5.0,next_open_to_close,model_top_0.20_long,True,0.5212514757969303,model_top_0.20_long
+242,-0.07006213381156479,-0.6938847123642883,-0.14977827403769295,-0.06737777616615703,,,5.0,next_open_to_close,baseline_ew_long_all,,,baseline_ew_long_all
+242,-0.041414444228181746,-0.3727902606800473,-0.14218969127229497,-0.039804173559017,,,5.0,next_open_to_close,baseline_spy_long_only,,,baseline_spy_long_only
+242,0.0,0.0,0.0,0.0,,,0.0,next_open_to_close,baseline_cash,,,baseline_cash
+242,-0.11937929838563188,-3.0949828990225843,-0.11704628581195875,-0.11492554227511975,,,5.0,next_open_to_close,baseline_random_long_short_ew,,,baseline_random_ew
+242,0.0,0.0,0.0,0.0,,,5.0,next_open_to_close,baseline_ew_long_on_model_longs_long_short,,,baseline_ew_long_on_model_longs_long_short
+242,0.0,0.0,0.0,0.0,,,5.0,next_open_to_close,baseline_ew_long_on_model_longs_long_only,,,baseline_ew_long_on_model_longs_long_only

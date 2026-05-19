@@ -1,0 +1,11 @@
+area,check,value,status,evidence
+Data coverage,Universe has enough rows and assets for cross-sectional tests,"42,245 rows / 35 tickers / 1207 dates",pass,2021-07-27 to 2026-05-15 | features v10
+Label integrity,Model uses realistic next-open target metadata,target_intraday_next_direction,pass,Bundle stores target_column and feature_set_version.
+Feature health,Sparse news features are detected instead of trusted blindly,mean news zero frac 99.92%,monitor,Sparse-feature pruning is enabled in train_model.py with --max-zero-frac.
+Holdout model quality,Latest model beats random ranking quality,ROC AUC 0.4780,fail,Latest chronological holdout run from reports/metrics_log.csv.
+Target benchmark,Best tested target shows meaningful separation,next_3d AUC 0.5034,fail,All targets are trained on the same chronological split.
+Backtest baseline,Top-ranked model basket beats SPY on holdout,model -1.34% vs SPY -3.98%,pass,Uses next-open-to-close execution and holdout-only scoring.
+Ranking alpha,Top-ranked names beat SPY and bottom-ranked names,top-SPY Sharpe -2.706; top-bottom Sharpe -1.410,fail,Cross-sectional ranking alpha report excludes SPY from the traded universe.
+Raw feature sanity,Standalone feature sweep finds a robust simple signal,hl_range_mean_5d:high spread Sharpe -0.693,fail,Every numeric model feature is tested both high and low.
+Walk-forward,Retrained folds remain above random,default mean AUC 0.5078,fail,Each fold trains on past data and scores the next unseen block.
+Longer-horizon research,3-day model improves enough to justify further research,3d WF mean AUC 0.5170,fail,"3d returns are overlapping diagnostics, not final portfolio stats."

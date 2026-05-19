@@ -1,0 +1,574 @@
+INVESTMENT NEWS + MARKET PREDICTION MODEL SETUP PLAN
+
+GOAL
+Build a system that continuously tracks news and market data for stocks, gold, silver, and other selected assets, converts that information into structured signals, and produces probability-based predictions for short-term and medium-term price movement.
+
+CORE PRINCIPLE
+The model should not try to “guess the future” with certainty.
+The model should output:
+- probability of price moving up or down
+- expected return range
+- expected volatility
+- confidence level
+- main drivers behind the prediction
+
+==================================================
+PHASE 1 — DEFINE THE PROBLEM
+==================================================
+
+Step 1: Choose the assets to track
+Start with a small set of assets:
+- 5 to 10 stocks
+- 1 gold asset
+- 1 silver asset
+Examples:
+- AAPL
+- MSFT
+- NVDA
+- SPY
+- GLD
+- SLV
+
+Step 2: Define the prediction horizon
+Choose what the model will predict:
+- next 1 hour
+- next trading day
+- next 5 trading days
+Start with one horizon first, such as:
+- next trading day direction
+- next trading day expected return
+
+Step 3: Define the target variables
+Possible targets:
+- binary direction: up or down
+- percent return over chosen horizon
+- probability of large move
+- volatility regime
+Recommended first targets:
+- Target 1: Will asset close higher tomorrow? (0 or 1)
+- Target 2: Expected % return over next trading day
+
+==================================================
+PHASE 2 — COLLECT DATA
+==================================================
+
+Step 4: Collect market price data
+For each asset, collect:
+- open
+- high
+- low
+- close
+- volume
+- timestamp
+Timeframes:
+- daily candles for first version
+- intraday candles later
+
+Step 5: Collect news data
+For each article/headline, collect:
+- title
+- full text if available
+- source
+- author if available
+- publish timestamp
+- related ticker or asset
+- article URL
+- category or tag if available
+
+Step 6: Collect macro and economic data
+For gold, silver, and broad stock direction, also collect:
+- interest rates
+- inflation data
+- jobs data
+- dollar index
+- bond yields
+- Fed-related events
+- recession or geopolitical indicators if possible
+
+Step 7: Collect company event data for stocks
+For stock-specific predictions, collect:
+- earnings dates
+- earnings surprises
+- guidance updates
+- SEC filing events
+- analyst rating changes
+- dividend or buyback announcements
+- mergers, lawsuits, or regulatory news
+
+==================================================
+PHASE 3 — STORE AND ORGANIZE DATA
+==================================================
+
+Step 8: Create a database structure
+Recommended tables:
+- assets
+- price_history
+- news_articles
+- article_asset_map
+- macro_data
+- filings
+- model_features
+- predictions
+- realized_outcomes
+
+Step 9: Standardize timestamps
+All timestamps must be normalized to one timezone and stored consistently.
+Important:
+- preserve exact publish time of news
+- preserve exact candle time of price data
+
+Step 10: Build data linking logic
+Each article must be linked to the correct asset(s).
+Example:
+- Apple earnings article -> AAPL
+- inflation report -> SPY, GLD, SLV, QQQ, etc.
+Use:
+- ticker tags from provider
+- keyword matching
+- named entity recognition
+- manual rules if needed
+
+==================================================
+PHASE 4 — CLEAN AND PREPARE NEWS DATA
+==================================================
+
+Step 11: Deduplicate news
+Many providers repeat the same story.
+Remove or group:
+- copied wire stories
+- duplicate headlines
+- near-duplicate content
+- repeated updates with minor wording changes
+
+Step 12: Score article quality
+For each article, assign quality features:
+- source credibility
+- article length
+- whether it is original reporting
+- whether it is breaking news
+- whether it is repeated commentary
+
+Step 13: Measure article novelty
+The model should distinguish:
+- truly new information
+- repeated discussion of old information
+Possible novelty features:
+- similarity to recent articles
+- count of related stories in previous 24 hours
+- whether headline introduces a new event word
+
+==================================================
+PHASE 5 — EXTRACT FEATURES
+==================================================
+
+Step 14: Create market-based features
+For each asset and timestamp:
+- daily return
+- rolling 3-day, 5-day, 10-day returns
+- rolling volatility
+- volume change
+- RSI
+- moving averages
+- trend slope
+- gap up / gap down
+- relative performance vs benchmark
+
+Step 15: Create news sentiment features
+For each article, calculate:
+- positive/negative sentiment
+- strength of sentiment
+- uncertainty score
+- fear/risk language
+- urgency level
+- optimism/pessimism level
+
+Step 16: Create topic/event features
+Classify each article into one or more topics:
+- earnings
+- guidance
+- M&A
+- lawsuit
+- regulation
+- downgrade/upgrade
+- inflation
+- rates
+- Fed
+- geopolitics
+- commodity supply
+- recession
+- market-wide risk
+Represent as:
+- one-hot encoded topics
+- topic probabilities
+- text embeddings
+
+Step 17: Create entity features
+Extract:
+- company name
+- ticker
+- executive names
+- sector
+- country/region
+- commodity mentions
+- central bank mentions
+
+Step 18: Create timing features
+For each article:
+- publication hour
+- pre-market / during-market / after-market
+- day of week
+- distance to earnings date
+- distance to macro release
+- number of articles in recent time window
+
+Step 19: Aggregate article features into time-window features
+For each asset and prediction timestamp, aggregate recent articles:
+- number of articles in last 1h / 6h / 24h
+- average sentiment
+- max sentiment shock
+- topic frequency
+- novelty average
+- source quality average
+- weighted sentiment by recency
+
+==================================================
+PHASE 6 — BUILD MODEL INPUT DATASET
+==================================================
+
+Step 20: Create row structure
+Each training row should represent:
+- one asset
+- one timestamp
+- one prediction horizon
+- all features available at that time only
+- future target value
+
+Example row:
+Asset = AAPL
+Timestamp = 2026-03-20 16:00:00
+Features = market features + news features + macro features
+Target = did AAPL close higher on next trading day?
+
+Step 21: Prevent leakage
+Do not allow the model to see future information.
+Strict rules:
+- only use articles published before prediction time
+- only use macro data known at that time
+- only use filing/event data known at that time
+- do not use revised future values
+- do not merge tomorrow’s close into today’s features by mistake
+
+==================================================
+PHASE 7 — TRAIN BASELINE MODELS
+==================================================
+
+Step 22: Start with simple baselines
+Before advanced models, build:
+- logistic regression for direction
+- random forest
+- XGBoost or LightGBM
+These often outperform overly complex models early on.
+
+Step 23: Build text representation
+Convert headlines/articles into model-friendly form using one or more:
+- TF-IDF
+- sentence embeddings
+- finance-specific transformer embeddings
+Recommended practical approach:
+- use embeddings for text
+- combine with structured tabular features
+
+Step 24: Train hybrid model
+Input:
+- technical market features
+- macro features
+- news sentiment/topic features
+- text embeddings
+Output:
+- probability of up/down
+- expected return
+
+Recommended first strong model:
+- LightGBM or XGBoost on combined features
+
+==================================================
+PHASE 8 — VALIDATE PROPERLY
+==================================================
+
+Step 25: Use time-based train/validation split
+Do not randomly shuffle across time.
+Use:
+- train on earlier dates
+- validate on later dates
+- test on newest unseen period
+
+Step 26: Evaluate classification performance
+For direction prediction, track:
+- accuracy
+- precision
+- recall
+- F1
+- ROC-AUC
+- calibration
+
+Step 27: Evaluate financial usefulness
+Also track:
+- average return when following signal
+- Sharpe ratio
+- hit rate
+- drawdown
+- profit after fees/slippage
+- performance by asset
+- performance by market regime
+
+Step 28: Compare against naive baselines
+Your model must beat:
+- always predict up
+- follow recent momentum
+- trade on sentiment alone
+- random guess
+If not, the model is not adding real value.
+
+==================================================
+PHASE 9 — ADD REGIME DETECTION
+==================================================
+
+Step 29: Create market regime labels
+Examples:
+- bull trend
+- bear trend
+- high volatility
+- low volatility
+- risk-on
+- risk-off
+- macro-driven
+- earnings-driven
+
+Step 30: Use regime in modeling
+Options:
+- add regime as a feature
+- train separate models by regime
+- weight predictions differently depending on regime
+
+==================================================
+PHASE 10 — BUILD LIVE PREDICTION PIPELINE
+==================================================
+
+Step 31: Create automated ingestion jobs
+Schedule jobs to:
+- fetch latest prices
+- fetch latest news
+- fetch macro updates
+- fetch company events
+- update features
+- run model inference
+
+Step 32: Run inference on schedule
+Examples:
+- every 15 minutes for live tracking
+- once after market close for next-day prediction
+- once before market open for pre-market signal
+
+Step 33: Save every prediction
+For each prediction, store:
+- asset
+- timestamp
+- horizon
+- predicted direction probability
+- expected return
+- confidence
+- top drivers
+- model version
+
+Step 34: Track realized outcomes
+After prediction horizon passes, store:
+- actual return
+- actual direction
+- error
+- confidence correctness
+This allows continual performance monitoring.
+
+==================================================
+PHASE 11 — EXPLAINABILITY
+==================================================
+
+Step 35: Generate reasons for each prediction
+Each output should include:
+- main bullish drivers
+- main bearish drivers
+- recent important news
+- technical trend summary
+- macro condition summary
+
+Example output:
+Asset: GLD
+Prediction horizon: next trading day
+Probability up: 0.64
+Expected return: +0.6%
+Confidence: medium
+Drivers:
+- weaker dollar
+- falling real yields
+- elevated geopolitical risk headlines
+- short-term momentum positive
+
+==================================================
+PHASE 12 — DEPLOYMENT
+==================================================
+
+Step 36: Build an API
+Create endpoints such as:
+- /predict/{asset}
+- /latest-news/{asset}
+- /model-status
+- /backtest-results
+
+Step 37: Build a dashboard
+Dashboard should show:
+- current predictions
+- confidence levels
+- recent key headlines
+- feature summaries
+- performance statistics
+- asset watchlist
+
+Step 38: Set alerts
+Trigger alerts when:
+- confidence exceeds threshold
+- major news event occurs
+- predicted move exceeds threshold
+- model detects regime change
+
+==================================================
+PHASE 13 — MONITORING AND RETRAINING
+==================================================
+
+Step 39: Monitor model drift
+Track whether:
+- prediction accuracy is declining
+- sentiment behavior is changing
+- market regime has changed
+- asset behavior no longer matches training history
+
+Step 40: Retrain regularly
+Suggested retraining schedule:
+- weekly or monthly for baseline
+- more frequent if using high-frequency data
+Always compare new model vs previous model before deployment.
+
+==================================================
+PHASE 14 — RISK CONTROLS
+==================================================
+
+Step 41: Never use raw prediction blindly
+Predictions should be filtered by:
+- minimum confidence
+- regime suitability
+- risk limits
+- event filters
+- liquidity constraints
+
+Step 42: Use paper trading first
+Before real capital:
+- simulate signals
+- record theoretical trades
+- include realistic fees/slippage
+- compare against buy-and-hold and simple strategies
+
+==================================================
+PHASE 15 — VERSION 2 IMPROVEMENTS
+==================================================
+
+Step 43: Add advanced NLP
+Later improvements:
+- event extraction
+- summarization
+- contradiction detection across articles
+- source reliability weighting
+- entity-level sentiment
+- market narrative clustering
+
+Step 44: Add alternative data
+Possible future inputs:
+- options flow
+- ETF flows
+- insider trading
+- social sentiment
+- analyst transcript embeddings
+- sector heatmaps
+- futures positioning
+
+Step 45: Add ensemble models
+Combine:
+- news-driven model
+- technical model
+- macro model
+- regime model
+Final prediction can be weighted across all.
+
+==================================================
+MINIMUM VIABLE VERSION
+==================================================
+
+If building the fastest useful version, do this first:
+
+1. Select 5 stocks + GLD + SLV
+2. Gather daily prices and daily news
+3. Clean and deduplicate articles
+4. Extract sentiment, topic, novelty, and timing features
+5. Create rolling market indicators
+6. Build next-day direction target
+7. Train LightGBM on combined tabular + text embedding features
+8. Test on unseen recent time period
+9. Save predictions daily
+10. Build a simple dashboard
+
+==================================================
+FINAL OUTPUT FORMAT FOR THE MODEL
+==================================================
+
+For every asset, return:
+
+- asset name
+- timestamp
+- prediction horizon
+- probability up
+- probability down
+- expected return
+- expected volatility
+- confidence level
+- top positive drivers
+- top negative drivers
+- recent relevant headlines
+- model version
+
+Example:
+
+Asset: AAPL
+Timestamp: 2026-03-24 08:00:00
+Horizon: next trading day
+Probability Up: 0.61
+Probability Down: 0.39
+Expected Return: +0.75%
+Expected Volatility: 1.9%
+Confidence: Medium
+Top Positive Drivers:
+- positive earnings-related headline momentum
+- strong recent price trend
+- above-average volume
+Top Negative Drivers:
+- sector volatility elevated
+- macro uncertainty remains high
+Model Version: v1.0
+
+==================================================
+RULES TO FOLLOW
+==================================================
+
+- Never predict with certainty
+- Always use timestamp-correct data
+- Always backtest by time order
+- Always compare against simple baselines
+- Always track live performance
+- Always explain key drivers
+- Always treat outputs as probabilities, not guarantees

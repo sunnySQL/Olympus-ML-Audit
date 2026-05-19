@@ -1,0 +1,36 @@
+ticker,role,name
+SPY,benchmark,SPDR S&P 500 ETF
+QQQ,market,Invesco QQQ Trust
+IWM,market,iShares Russell 2000 ETF
+DIA,market,SPDR Dow Jones Industrial Average ETF
+XLK,sector,Technology Select Sector SPDR
+XLF,sector,Financial Select Sector SPDR
+XLE,sector,Energy Select Sector SPDR
+XLV,sector,Health Care Select Sector SPDR
+XLY,sector,Consumer Discretionary Select Sector SPDR
+XLI,sector,Industrial Select Sector SPDR
+XLP,sector,Consumer Staples Select Sector SPDR
+XLU,sector,Utilities Select Sector SPDR
+XLB,sector,Materials Select Sector SPDR
+XLRE,sector,Real Estate Select Sector SPDR
+XLC,sector,Communication Services Select Sector SPDR
+GLD,commodity,SPDR Gold Shares
+SLV,commodity,iShares Silver Trust
+TLT,rates,iShares 20+ Year Treasury Bond ETF
+HYG,credit,iShares iBoxx High Yield Corporate Bond ETF
+AAPL,equity,Apple
+MSFT,equity,Microsoft
+NVDA,equity,NVIDIA
+AMZN,equity,Amazon
+GOOGL,equity,Alphabet
+META,equity,Meta Platforms
+TSLA,equity,Tesla
+JPM,equity,JPMorgan Chase
+UNH,equity,UnitedHealth Group
+XOM,equity,Exxon Mobil
+AVGO,equity,Broadcom
+COST,equity,Costco
+AMD,equity,Advanced Micro Devices
+NFLX,equity,Netflix
+CRM,equity,Salesforce
+ORCL,equity,Oracle

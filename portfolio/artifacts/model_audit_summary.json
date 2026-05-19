@@ -1,0 +1,11 @@
+{
+  "generated_utc": "2026-05-19T03:32:02.590614+00:00",
+  "deploy_verdict": "REJECT_FOR_TRADING",
+  "project_verdict": "PORTFOLIO_READY_MODEL_AUDIT_PLATFORM",
+  "model_path": "/Users/ken/Documents/Olympus Project/models/direction_model.pkl",
+  "features_path": "/Users/ken/Documents/Olympus Project/data/features.csv",
+  "target_column": "target_intraday_next_direction",
+  "model_kind": "global",
+  "feature_count": 52,
+  "feature_set_version": "v10"
+}

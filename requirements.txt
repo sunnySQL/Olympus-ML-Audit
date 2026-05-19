@@ -1,0 +1,20 @@
+pandas
+numpy
+scikit-learn>=1.8; python_version >= "3.11"
+scikit-learn>=1.6,<1.8; python_version < "3.11"
+xgboost
+yfinance
+sqlalchemy
+python-dotenv
+joblib
+vaderSentiment
+feedparser
+streamlit
+plotly
+optuna
+shap
+
+# optional:
+# transformers
+# sentence-transformers
+# nltk
