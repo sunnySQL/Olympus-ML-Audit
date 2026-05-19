@@ -34,6 +34,3 @@ Generated: `2026-05-19T04:18:26.714173+00:00`
 - `screenshots/landingpage.png` - Dashboard landing page
 - `screenshots/modelhealth.png` - Model health
 
-## Suggested Portfolio Blurb
-
-Olympus is an ML research platform for market signals. The current model is rejected for trading, but the system is portfolio-ready because it demonstrates realistic target design, leakage checks, baseline comparisons, ranking-alpha evaluation, walk-forward testing, and a generated deployment audit.

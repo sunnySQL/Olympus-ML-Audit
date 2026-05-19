@@ -12,6 +12,23 @@ Current audit verdict:
 
 Use `python scripts/portfolio_export.py` to regenerate the audit report and assemble the portfolio artifacts in `portfolio/`.
 
+## Screenshots
+
+### Dashboard Overview
+![Olympus dashboard overview](portfolio/screenshots/landingpage.png)
+
+### Model Audit
+![Olympus model audit checklist](portfolio/screenshots/auditlog.png)
+
+### Model Health
+![Olympus model health dashboard](portfolio/screenshots/modelhealth.png)
+
+### Backtest
+![Olympus backtest dashboard](portfolio/screenshots/backtest.png)
+
+### Signal Chart
+![Olympus ticker chart and signal context](portfolio/screenshots/chart.png)
+
 ## 1. Scope
 - Universe: configurable in `config/universe.csv`; current default is a 35-ticker liquid mix of SPY/QQQ/IWM/DIA, sector ETFs, GLD/SLV/TLT/HYG, and mega-cap equities
 - Horizon: next trading day direction + return, plus realistic next-open 3-day/5-day research labels
