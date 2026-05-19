@@ -72,14 +72,25 @@ The strongest engineering story is not “I built a profitable trading bot.” I
 
 This shows practical ML judgment: building a full pipeline, finding failure modes, adding reproducible tests, and communicating model limitations clearly.
 
-## Screenshots To Add
+## Screenshots
 
-Add screenshots to `portfolio/screenshots/`:
+The `portfolio/screenshots/` folder includes the dashboard views used in the portfolio page:
 
-- `audit_tab.png` - dashboard audit verdict and checklist.
-- `model_health_tab.png` - training metrics and walk-forward section.
-- `backtest_tab.png` - strategy vs baselines.
-- `audit_report_html.png` - generated HTML audit report.
+- `landingpage.png` - dashboard landing page and project overview.
+- `auditlog.png` - deployment audit verdict and checklist.
+- `modelhealth.png` - training metrics, model details, and walk-forward section.
+- `backtest.png` - strategy vs baseline comparison.
+- `chart.png` - ticker chart and signal context.
+
+![Olympus dashboard landing page](screenshots/landingpage.png)
+
+![Audit checklist](screenshots/auditlog.png)
+
+![Model health](screenshots/modelhealth.png)
+
+![Backtest vs baselines](screenshots/backtest.png)
+
+![Ticker chart and signal context](screenshots/chart.png)
 
 Suggested portfolio layout:
 

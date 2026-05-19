@@ -1,6 +1,6 @@
 # Olympus Portfolio Export
 
-Generated: `2026-05-19T03:32:02.722322+00:00`
+Generated: `2026-05-19T04:18:26.714173+00:00`
 
 ## Verdict
 
@@ -28,12 +28,11 @@ Generated: `2026-05-19T03:32:02.722322+00:00`
 
 ## Screenshots
 
-Add your dashboard screenshots to `screenshots/`:
-
-- `screenshots/audit_tab.png`
-- `screenshots/model_health_tab.png`
-- `screenshots/backtest_tab.png`
-- `screenshots/audit_report_html.png`
+- `screenshots/auditlog.png` - Audit checklist
+- `screenshots/backtest.png` - Backtest vs baselines
+- `screenshots/chart.png` - Ticker chart and signal context
+- `screenshots/landingpage.png` - Dashboard landing page
+- `screenshots/modelhealth.png` - Model health
 
 ## Suggested Portfolio Blurb
 

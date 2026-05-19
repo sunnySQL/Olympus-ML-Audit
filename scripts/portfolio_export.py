@@ -29,6 +29,15 @@ KEY_REPORTS = [
 ]
 
 
+SCREENSHOT_LABELS = {
+    "landingpage.png": "Dashboard landing page",
+    "auditlog.png": "Audit checklist",
+    "modelhealth.png": "Model health",
+    "backtest.png": "Backtest vs baselines",
+    "chart.png": "Ticker chart and signal context",
+}
+
+
 def run_audit() -> None:
     cmd = [sys.executable, str(ROOT / "scripts" / "generate_model_audit_report.py")]
     subprocess.run(cmd, cwd=ROOT, check=True)
@@ -52,21 +61,40 @@ def ensure_screenshot_placeholders() -> None:
     gitkeep = SCREENSHOTS_DIR / ".gitkeep"
     if not gitkeep.exists():
         gitkeep.write_text("", encoding="utf-8")
+    screenshots = list_screenshots()
+    found_lines = "\n".join(
+        f"- `{path.name}` - {SCREENSHOT_LABELS.get(path.name, 'Project screenshot')}"
+        for path in screenshots
+    )
+    if not found_lines:
+        found_lines = "- No screenshots found yet."
     guide = SCREENSHOTS_DIR / "README.md"
     guide.write_text(
-        """# Screenshot Checklist
+        f"""# Screenshot Checklist
 
-Add these images before publishing the portfolio page:
+Current screenshots:
 
-- `audit_tab.png` - dashboard audit verdict and checklist.
-- `model_health_tab.png` - metrics history, feature importance, and walk-forward section.
-- `backtest_tab.png` - strategy vs baseline comparison.
-- `audit_report_html.png` - generated HTML model audit report.
+{found_lines}
+
+Recommended set before publishing:
+
+- `landingpage.png` - dashboard landing page.
+- `auditlog.png` - dashboard audit verdict and checklist.
+- `modelhealth.png` - metrics history, feature importance, and walk-forward section.
+- `backtest.png` - strategy vs baseline comparison.
+- `chart.png` - ticker chart and signal context.
 
 Recommended browser width: 1440px or wider.
 """,
         encoding="utf-8",
     )
+
+
+def list_screenshots() -> list[Path]:
+    if not SCREENSHOTS_DIR.exists():
+        return []
+    exts = {".png", ".jpg", ".jpeg", ".webp"}
+    return sorted(p for p in SCREENSHOTS_DIR.iterdir() if p.suffix.lower() in exts)
 
 
 def load_audit_meta() -> dict:
@@ -83,6 +111,13 @@ def write_portfolio_index(copied: list[str]) -> None:
     meta = load_audit_meta()
     generated = datetime.now(timezone.utc).isoformat()
     artifact_lines = "\n".join(f"- `artifacts/{name}`" for name in copied) or "- No report artifacts copied."
+    screenshots = list_screenshots()
+    screenshot_lines = "\n".join(
+        f"- `screenshots/{path.name}` - {SCREENSHOT_LABELS.get(path.name, 'Project screenshot')}"
+        for path in screenshots
+    )
+    if not screenshot_lines:
+        screenshot_lines = "- Add screenshots to `screenshots/`."
     PORTFOLIO_DIR.mkdir(parents=True, exist_ok=True)
     (PORTFOLIO_DIR / "README.md").write_text(
         f"""# Olympus Portfolio Export
@@ -108,12 +143,7 @@ Generated: `{generated}`
 
 ## Screenshots
 
-Add your dashboard screenshots to `screenshots/`:
-
-- `screenshots/audit_tab.png`
-- `screenshots/model_health_tab.png`
-- `screenshots/backtest_tab.png`
-- `screenshots/audit_report_html.png`
+{screenshot_lines}
 
 ## Suggested Portfolio Blurb
 
